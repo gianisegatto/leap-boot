@@ -14,9 +14,9 @@ class LeapApplication {
 
         const starterComponents = starters.map(starter => startStarter(starter, environment));
 
-        const contextLoader = new ContextLoader();
+        const contextLoader = new ContextLoader(starterComponents);
 
-        contextLoader.load(starterComponents);
+        contextLoader.load(process.cwd() + "/src/main/node/");
     }
 }
 
