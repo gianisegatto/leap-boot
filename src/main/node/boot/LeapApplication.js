@@ -23,6 +23,6 @@ class LeapApplication {
 module.exports = LeapApplication;
 
 function startStarter(starter, environment) {
-    const configuration = require(starter).Configuration;
-    return configuration.load(environment);
+    const AutoConfiguration = require(starter).AutoConfiguration;
+    return AutoConfiguration.load(environment);
 }
