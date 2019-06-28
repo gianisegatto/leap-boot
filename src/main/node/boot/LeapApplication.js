@@ -4,7 +4,7 @@ const ContextLoader = require("leap-context").ContextLoader;
 
 class LeapApplication {
 
-    static start() {
+    static start(externalComponents) {
 
         const leapStarterLoader = new LeapStarterLoader();
 
@@ -12,7 +12,9 @@ class LeapApplication {
 
         const environment = new EnvironmentLoader().load();
 
-        const bondComponents = preLoadBonds(bonds, environment);
+        let bondComponents = preLoadBonds(bonds, environment);
+
+        bondComponents = bondComponents.concat(externalComponents);
 
         const contextLoader = new ContextLoader(bondComponents);
 
