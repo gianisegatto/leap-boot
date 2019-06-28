@@ -8,21 +8,40 @@ class LeapApplication {
 
         const leapStarterLoader = new LeapStarterLoader();
 
-        const starters = leapStarterLoader.load();
+        const bonds = leapStarterLoader.load();
 
         const environment = new EnvironmentLoader().load();
 
-        const bondComponents = starters.map(bond => startBond(bond, environment));
+        const bondComponents = preLoadBonds(bonds, environment);
 
         const contextLoader = new ContextLoader(bondComponents);
 
-        contextLoader.load(process.cwd() + "/src/main/node/");
+        const instances = contextLoader.load(process.cwd() + "/src/main/node/");
+
+        const postInstances = postLoadBonds(bonds, components);
+
+        instances.concat(postInstances);
+
+        return instances;
     }
 }
 
 module.exports = LeapApplication;
 
-function startBond(bond, environment) {
+function preLoadBonds(bonds, environment) {
+    return bonds.map(bond => preLoad(bond, environment));
+}
+
+function preLoad(bond, environment) {
     const AutoConfiguration = require(bond).AutoConfiguration;
-    return AutoConfiguration.load(environment);
+    return AutoConfiguration.preLoad(environment);
+}
+
+function postLoadBonds(bonds, components) {
+    return bonds.map(bond => postLoad(bond, environment));
+}
+
+function postLoad(bond, components) {
+    const AutoConfiguration = require(bond).AutoConfiguration;
+    return AutoConfiguration.postLoad(components);
 }
