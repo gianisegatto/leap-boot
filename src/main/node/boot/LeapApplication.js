@@ -39,7 +39,7 @@ function preLoad(bond, environment) {
 }
 
 function postLoadBonds(bonds, components) {
-    return bonds.map(bond => postLoad(bond, environment))
+    return bonds.map(bond => postLoad(bond, components))
                 .filter(component => component !== undefined);
 }
 
