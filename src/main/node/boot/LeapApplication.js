@@ -16,20 +16,21 @@ class LeapApplication {
 
         const contextLoader = new ContextLoader(bondComponents);
 
-        const instances = contextLoader.load(process.cwd() + "/src/main/node/");
+        const components = contextLoader.load(process.cwd() + "/src/main/node/");
 
         const postInstances = postLoadBonds(bonds, components);
 
-        instances.concat(postInstances);
+        components.concat(postInstances);
 
-        return instances;
+        return components;
     }
 }
 
 module.exports = LeapApplication;
 
 function preLoadBonds(bonds, environment) {
-    return bonds.map(bond => preLoad(bond, environment));
+    return bonds.map(bond => preLoad(bond, environment))
+                .filter(component => component !== undefined);
 }
 
 function preLoad(bond, environment) {
@@ -38,7 +39,8 @@ function preLoad(bond, environment) {
 }
 
 function postLoadBonds(bonds, components) {
-    return bonds.map(bond => postLoad(bond, environment));
+    return bonds.map(bond => postLoad(bond, environment))
+                .filter(component => component !== undefined);
 }
 
 function postLoad(bond, components) {
