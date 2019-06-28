@@ -12,9 +12,9 @@ class LeapApplication {
 
         const environment = new EnvironmentLoader().load();
 
-        const starterComponents = starters.map(starter => startStarter(starter, environment));
+        const bondComponents = starters.map(bond => startBond(bond, environment));
 
-        const contextLoader = new ContextLoader(starterComponents);
+        const contextLoader = new ContextLoader(bondComponents);
 
         contextLoader.load(process.cwd() + "/src/main/node/");
     }
@@ -22,7 +22,7 @@ class LeapApplication {
 
 module.exports = LeapApplication;
 
-function startStarter(starter, environment) {
-    const AutoConfiguration = require(starter).AutoConfiguration;
+function startBond(bond, environment) {
+    const AutoConfiguration = require(bond).AutoConfiguration;
     return AutoConfiguration.load(environment);
 }
