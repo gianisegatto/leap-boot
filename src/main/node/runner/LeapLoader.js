@@ -5,7 +5,7 @@ class LeapLoader {
     }
 
     preLoadRunners(runners) {
-        return runners.map(runner => preLoad(runner))
+        return runners.map(runner => this.preLoad(runner))
                     .filter(component => component !== undefined);
     }
 
@@ -15,7 +15,7 @@ class LeapLoader {
     }
 
     postLoadRunners(runners, components) {
-        return runners.map(runner => postLoad(runner, components))
+        return runners.map(runner => this.postLoad(runner, components))
                       .filter(component => component !== undefined);
     }
 
