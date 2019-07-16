@@ -1,4 +1,5 @@
-const LeapStarterLoader = require("./LeapStarterLoader");
+const LeapRunners = require("./LeapRunners");
+const LeapLoader = require("./LeapLoader");
 const EnvironmentLoader = require("leap-core").EnvironmentLoader;
 const ContextLoader = require("leap-context").ContextLoader;
 
@@ -6,13 +7,15 @@ class LeapApplication {
 
     static start(externalComponents) {
 
-        const leapStarterLoader = new LeapStarterLoader();
+        const leapStarterLoader = new LeapRunners();
 
         const bonds = leapStarterLoader.load();
 
         const environment = new EnvironmentLoader().load();
 
-        let bondComponents = preLoadBonds(bonds, environment);
+        const leapLoader = new LeapLoader(environment);
+
+        let bondComponents = leapLoader.preLoadRunners(bonds);
 
         bondComponents = bondComponents.concat(externalComponents);
 
@@ -20,7 +23,7 @@ class LeapApplication {
 
         let components = contextLoader.load(process.cwd() + "/src/main/node/");
 
-        const postInstances = postLoadBonds(bonds, components);
+        const postInstances = leapLoader.postLoadRunners(bonds, components);
 
         components = components.concat(postInstances);
 
@@ -29,23 +32,3 @@ class LeapApplication {
 }
 
 module.exports = LeapApplication;
-
-function preLoadBonds(bonds, environment) {
-    return bonds.map(bond => preLoad(bond, environment))
-        .filter(component => component !== undefined);
-}
-
-function preLoad(bond, environment) {
-    const AutoConfiguration = require(bond).AutoConfiguration;
-    return AutoConfiguration.preLoad(environment);
-}
-
-function postLoadBonds(bonds, components) {
-    return bonds.map(bond => postLoad(bond, components))
-        .filter(component => component !== undefined);
-}
-
-function postLoad(bond, components) {
-    const AutoConfiguration = require(bond).AutoConfiguration;
-    return AutoConfiguration.postLoad(components);
-}
