@@ -21,7 +21,7 @@ class LeapApplication {
 
         const contextLoader = new ContextLoader(runnerComponents);
 
-        let components = contextLoader.load(process.cwd() + "/src/main/node");
+        let components = contextLoader.load(process.cwd() + "/src");
 
         const postInstances = leapLoader.postLoadRunners(runners, components);
 
