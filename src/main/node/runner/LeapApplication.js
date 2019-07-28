@@ -7,23 +7,23 @@ class LeapApplication {
 
     static start(externalComponents) {
 
-        const leapStarterLoader = new LeapRunners();
+        const leapRunners = new LeapRunners();
 
-        const bonds = leapStarterLoader.load();
+        const runners = leapRunners.load();
 
         const environment = new EnvironmentLoader().load();
 
         const leapLoader = new LeapLoader(environment);
 
-        let bondComponents = leapLoader.preLoadRunners(bonds);
+        let runnerComponents = leapLoader.preLoadRunners(runners);
 
-        bondComponents = bondComponents.concat(externalComponents);
+        runnerComponents = runnerComponents.concat(externalComponents);
 
-        const contextLoader = new ContextLoader(bondComponents);
+        const contextLoader = new ContextLoader(runnerComponents);
 
-        let components = contextLoader.load(process.cwd() + "/src/main/node/");
+        let components = contextLoader.load(process.cwd() + "/src/main/node");
 
-        const postInstances = leapLoader.postLoadRunners(bonds, components);
+        const postInstances = leapLoader.postLoadRunners(runners, components);
 
         components = components.concat(postInstances);
 
